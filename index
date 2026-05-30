@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Lady 🌌</title>
+    <style>
+        /* Base y Fondo Oscuro Profundo */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0b0b1a;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- 🌸 EFECTO LLUVIA DE PÉTALOS DE CEREZO --- */
+        .cherry-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .petal {
+            position: absolute;
+            background: linear-gradient(135deg, #ffb7b2, #ffdae0);
+            border-radius: 15% 70% 15% 70%;
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-20px) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(105vh) translateX(100px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* --- CONTENIDO PRINCIPAL --- */
+        .main-content {
+            position: relative;
+            z-index: 2; /* Por encima de la lluvia de pétalos */
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Encabezado con corrección de VS Code */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: linear-gradient(45deg, #ff4d6d, #4cc9f0);
+            
+            /* Solución limpia sin advertencias en el editor */
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            
+            text-shadow: 0 0 30px rgba(255, 77, 109, 0.3);
+            display: inline-block;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #8ecae6;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+
+        /* --- SECCIÓN DE TARJETAS (3 Columnas) --- */
+        .cards-container {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        /* Estilo base de las Tarjetas (Glassmorphism) */
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px 30px;
+            width: 320px;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .card-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .card-description {
+            font-size: 0.95rem;
+            color: #b0b0d0;
+            line-height: 1.5;
+        }
+
+        /* --- PERSONALIZACIÓN INDIVIDUAL DE TARJETAS --- */
+
+        /* 1. Tarjeta: El Baúl */
+        .card.baul {
+            box-shadow: 0 10px 30px rgba(162, 0, 255, 0.15);
+        }
+        .card.baul:hover {
+            transform: translateY(-10px);
+            border-color: #a200ff;
+            box-shadow: 0 15px 40px rgba(162, 0, 255, 0.4);
+        }
+        .card.baul :hover .card-icon {
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        /* 2. Tarjeta CENTRAL: EPIC (Efecto Tormenta Neón) */
+        .card.epic {
+            box-shadow: 0 10px 30px rgba(76, 201, 240, 0.15);
+            border: 1px solid rgba(76, 201, 240, 0.2);
+            background: rgba(11, 11, 26, 0.6);
+        }
+        .card.epic .card-title {
+            color: #4cc9f0;
+            text-shadow: 0 0 10px rgba(76, 201, 240, 0.5);
+        }
+        .card.epic:hover {
+            transform: translateY(-15px) scale(1.02); /* Destaca ligeramente por encima al pasar el mouse */
+            border-color: #ffd700; /* Toque dorado de corona heróica */
+            box-shadow: 0 0 30px rgba(76, 201, 240, 0.5), inset 0 0 15px rgba(255, 215, 0, 0.2);
+        }
+        .card.epic:hover .card-icon {
+            transform: translateY(-5px) scale(1.15);
+            text-shadow: 0 0 20px #ffd700;
+        }
+
+        /* 3. Tarjeta: Corazón */
+        .card.corazon {
+            box-shadow: 0 10px 30px rgba(255, 77, 109, 0.15);
+        }
+        .card.corazon:hover {
+            transform: translateY(-10px);
+            border-color: #ff4d6d;
+            box-shadow: 0 15px 40px rgba(255, 77, 109, 0.4);
+        }
+        .card.corazon:hover .card-icon {
+            transform: scale(1.2);
+        }
+
+        /* Responsivo sencillo */
+        @media (max-width: 768px) {
+            .cards-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .header h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Contenedor para el efecto de pétalos -->
+    <div class="cherry-container" id="cherryContainer"></div>
+
+    <div class="main-content">
+        <!-- Encabezado principal -->
+        <div class="header">
+            <h1>Para Lady</h1>
+            <p>Un pequeño espacio diseñado para ti en este rincón del universo</p>
+        </div>
+
+        <!-- Contenedor de las 3 opciones -->
+        <div class="cards-container">
+            
+            <!-- Tarjeta 1: El Baúl -->
+            <a href="baul.html" class="card baul">
+                <div>
+                    <div class="card-icon">🔮</div>
+                    <div class="card-title">El Baúl</div>
+                    <p class="card-description">Un lugar secreto donde se guardan recuerdos especiales, pequeños fragmentos e historias congeladas en el tiempo.</p>
+                </div>
+            </a>
+
+            <!-- Tarjeta 2: EPIC (La Odisea) -->
+            <a href="epic.html" class="card epic">
+                <div>
+                    <div class="card-icon">⚡</div>
+                    <div class="card-title">EPIC</div>
+                    <p class="card-description">Nuestra propia odisea inspirada en grandes canciones, batallas de mitos y el ritmo de un musical inolvidable.</p>
+                </div>
+            </a>
+
+            <!-- Tarjeta 3: Corazón -->
+            <a href="corazon.html" class="card corazon">
+                <div>
+                    <div class="card-icon">💝</div>
+                    <div class="card-title">Mi Corazón</div>
+                    <p class="card-description">El lado más puro y bonito de esta interfaz, hecho especialmente con animaciones interactivas llenas de sentimiento.</p>
+                </div>
+            </a>
+
+        </div>
+    </div>
+
+    <!-- Script de control de los pétalos de sakura -->
+   <!-- Script optimizado: Lluvia fluida y abundante de pétalos -->
+    <script>
+        function createPetal() {
+            const container = document.getElementById('cherryContainer');
+            if (!container) return;
+
+            const petal = document.createElement('div');
+            petal.classList.add('petal');
+
+            // Tamaños aleatorios dinámicos (entre 8px y 16px)
+            const size = Math.random() * 8 + 8;
+            petal.style.width = `${size}px`;
+            petal.style.height = `${size}px`;
+            
+            // Distribución horizontal aleatoria en toda la pantalla
+            petal.style.left = Math.random() * 100 + 'vw';
+            
+            // Velocidad variable (entre 5 y 9 segundos) para dar profundidad
+            const duration = Math.random() * 4 + 5;
+            petal.style.animationDuration = `${duration}s`;
+
+            container.appendChild(petal);
+
+            // Limpieza automática del DOM al terminar la caída para mantener el rendimiento al 100%
+            setTimeout(() => {
+                petal.remove();
+            }, duration * 1000);
+        }
+
+        // Generación más rápida (150ms) para aumentar notablemente la cantidad de pétalos en pantalla
+        setInterval(createPetal, 150);
+    </script>
+</body>
+</html>
