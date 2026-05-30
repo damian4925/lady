@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Para Lady 🌌 | Baúl • EPIC • Corazón</title>
+    <style>
+        /* ========== ESTILOS GLOBALES ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0b0b1a;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* --- 🌸 EFECTO LLUVIA DE PÉTALOS (GLOBAL) --- */
+        .cherry-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .petal {
+            position: absolute;
+            background: linear-gradient(135deg, #ffb7b2, #ffdae0);
+            border-radius: 15% 70% 15% 70%;
+            opacity: 0.8;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-20px) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(105vh) translateX(100px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* --- BOTÓN VOLVER AL MENÚ (estilo consistente) --- */
+        .back-to-menu {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            color: #b0b0d0;
+            padding: 10px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.95rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            z-index: 100;
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .back-to-menu:hover {
+            background: rgba(162, 0, 255, 0.2);
+            border-color: #a200ff;
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(162, 0, 255, 0.4);
+        }
+
+        /* ========== SECCIONES (ocultas/mostradas) ========== */
+        .section {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            transition: opacity 0.3s ease;
+        }
+
+        .section.hidden {
+            display: none;
+        }
+
+        .section.visible {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ========== ESTILOS DEL MENÚ PRINCIPAL (index) ========== */
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            background: linear-gradient(45deg, #ff4d6d, #4cc9f0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px rgba(255, 77, 109, 0.3);
+            display: inline-block;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #8ecae6;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+
+        .cards-container {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px 30px;
+            width: 320px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .card-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        .card-description {
+            font-size: 0.95rem;
+            color: #b0b0d0;
+            line-height: 1.5;
+        }
+
+        .card.baul:hover {
+            transform: translateY(-10px);
+            border-color: #a200ff;
+            box-shadow: 0 15px 40px rgba(162, 0, 255, 0.4);
+        }
+
+        .card.epic {
+            box-shadow: 0 10px 30px rgba(76, 201, 240, 0.15);
+            border: 1px solid rgba(76, 201, 240, 0.2);
+        }
+        .card.epic .card-title {
+            color: #4cc9f0;
+            text-shadow: 0 0 10px rgba(76, 201, 240, 0.5);
+        }
+        .card.epic:hover {
+            transform: translateY(-15px) scale(1.02);
+            border-color: #ffd700;
+            box-shadow: 0 0 30px rgba(76, 201, 240, 0.5);
+        }
+
+        .card.corazon:hover {
+            transform: translateY(-10px);
+            border-color: #ff4d6d;
+            box-shadow: 0 15px 40px rgba(255, 77, 109, 0.4);
+        }
+
+        /* ========== ESTILOS DE EPIC (Bolsa de Eolo) ========== */
+        .wind-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 5;
+            overflow: hidden;
+        }
+
+        .wind-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, rgba(100, 200, 255, 0.65), rgba(210, 230, 255, 0.9), transparent);
+            height: 3px;
+            border-radius: 50%;
+            filter: blur(1px);
+            box-shadow: 0 0 10px #2aa9ff;
+            animation: blowWind linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes blowWind {
+            0% { transform: translateX(-180vw) scaleX(0.6); opacity: 0; }
+            20% { opacity: 0.95; }
+            80% { opacity: 0.7; }
+            100% { transform: translateX(180vw) scaleX(1.3); opacity: 0; }
+        }
+
+        .epic-game-box {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 650px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            padding: 0 12px;
+        }
+
+        .epic-game-box h1 {
+            font-size: clamp(1.8rem, 7vw, 2.7rem);
+            background: linear-gradient(135deg, #ffe29a, #ffb13c);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: 3px;
+            margin-bottom: 6px;
+        }
+
+        .bag-container {
+            position: relative;
+            width: min(220px, 55vw);
+            height: min(250px, 62vw);
+            margin-bottom: 20px;
+            cursor: pointer;
+            touch-action: manipulation;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 15px 20px rgba(0, 0, 0, 0.6));
+        }
+
+        .bag-glow {
+            position: absolute;
+            top: -15%;
+            left: -15%;
+            width: 130%;
+            height: 130%;
+            background: radial-gradient(circle, rgba(80, 180, 255, 0.55) 0%, rgba(60, 40, 130, 0.7) 80%, transparent);
+            border-radius: 50%;
+            filter: blur(18px);
+            opacity: 0.7;
+            transition: all 0.2s ease;
+            z-index: 0;
+            animation: mysticPulse 3s infinite alternate;
+            pointer-events: none;
+        }
+
+        @keyframes mysticPulse {
+            0% { opacity: 0.45; transform: scale(0.95); filter: blur(15px);}
+            100% { opacity: 1; transform: scale(1.15); filter: blur(22px);}
+        }
+
+        .ancient-bag {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
+            animation: floatBag 5s ease-in-out infinite;
+            transition: transform 0.05s linear;
+            cursor: pointer;
+        }
+
+        .ancient-bag::before {
+            content: '🌩️';
+            position: absolute;
+            top: -18%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 48%;
+            height: 22%;
+            border: 4px solid #c98a4b;
+            border-bottom: none;
+            border-radius: 50px 50px 0 0;
+            background: rgba(70, 40, 20, 0.6);
+            backdrop-filter: blur(2px);
+            font-size: clamp(18px, 5vw, 28px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffdd99;
+        }
+
+        .bag-body {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 85%;
+            background: radial-gradient(ellipse at 35% 25%, #8c572f, #3e2412);
+            border-radius: 45% 45% 30% 30%;
+            box-shadow: inset -10px -8px 20px rgba(0,0,0,0.7), inset 8px 6px 18px rgba(220, 160, 70, 0.3), 0 18px 22px black;
+            border: 1px solid #e5bc87;
+        }
+
+        .storm-seal {
+            position: absolute;
+            bottom: 12%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24%;
+            height: auto;
+            aspect-ratio: 1/1;
+            background: rgba(0, 20, 40, 0.8);
+            border-radius: 50%;
+            border: 2px solid #ffcd7e;
+            box-shadow: inset 0 0 12px #ffbb55;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(20px, 7vw, 32px);
+        }
+        .storm-seal::before { content: "🌪️"; }
+
+        .shaking { animation: stormShake 0.08s infinite alternate !important; }
+        .shaking-hard { animation: cataclysmShake 0.05s infinite alternate !important; }
+        @keyframes stormShake {
+            0% { transform: translate(1.5px, 1px) rotate(0.6deg); }
+            100% { transform: translate(-1.5px, -1.5px) rotate(-0.6deg); }
+        }
+        @keyframes cataclysmShake {
+            0% { transform: translate(5px, 4px) rotate(1.8deg); }
+            100% { transform: translate(-5px, -4px) rotate(-1.8deg); }
+        }
+
+        .lyrics-display {
+            min-height: 100px;
+            width: 100%;
+            padding: 18px 14px;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50px;
+            border: 1px solid rgba(210, 170, 70, 0.5);
+            backdrop-filter: blur(12px);
+            margin-top: 6px;
+        }
+
+        .lyric-text {
+            font-size: clamp(1rem, 4.5vw, 1.5rem);
+            font-style: italic;
+            font-weight: bold;
+            text-align: center;
+            color: #f5efdf;
+            text-shadow: 0 0 12px #3388ff;
+        }
+
+        /* ========== ESTILOS DEL CORAZÓN LED ========== */
+        #fractalCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        #heartContainer {
+            position: relative;
+            width: 90vmin;
+            height: 90vmin;
+            z-index: 1;
+        }
+
+        .led-text {
+            position: absolute;
+            font-weight: bold;
+            font-size: 1.8vmin;
+            color: #fff0f3;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.05s linear;
+            white-space: nowrap;
+        }
+
+        #centralText {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 5vmin;
+            font-weight: bold;
+            color: #fff0f3;
+            text-shadow: 0 0 25px #ff4d6d, 0 0 10px #fff;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        /* ========== ESTILOS DEL BAÚL ========== */
+        .baul-container {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(162, 0, 255, 0.2);
+            border-radius: 25px;
+            padding: 40px;
+            max-width: 600px;
+            width: 90%;
+            text-align: center;
+            backdrop-filter: blur(12px);
+        }
+
+        .baul-container h1 {
+            color: #ffffff;
+            margin-bottom: 30px;
+            font-size: 2.2rem;
+            text-shadow: 0 0 15px rgba(162, 0, 255, 0.6);
+        }
+
+        .quote-box {
+            min-height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .quote {
+            font-size: 1.4rem;
+            line-height: 1.6;
+            font-style: italic;
+            color: #e0f2fe;
+            text-shadow: 0 0 8px rgba(224, 242, 254, 0.3);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        .action-btn {
+            background: linear-gradient(45deg, #a200ff, #ff4d6d);
+            color: #ffffff;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .action-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(255, 77, 109, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .cards-container { flex-direction: column; align-items: center; }
+            .header h1 { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LLUVIA DE PÉTALOS GLOBAL -->
+    <div class="cherry-container" id="cherryContainer"></div>
+
+    <!-- CONTENEDOR DE VIENTO PARA EPIC (siempre presente pero oculto hasta activar) -->
+    <div class="wind-container" id="windContainer" style="display: none;"></div>
+
+    <!-- ==================== SECCIÓN MENÚ PRINCIPAL ==================== -->
+    <div id="menuSection" class="section visible">
+        <div class="header">
+            <h1>Para Lady</h1>
+            <p>Un pequeño espacio diseñado para ti en este rincón del universo</p>
+        </div>
+        <div class="cards-container">
+            <div class="card baul" onclick="showSection('baul')">
+                <div>
+                    <div class="card-icon">🔮</div>
+                    <div class="card-title">El Baúl</div>
+                    <p class="card-description">Un lugar secreto donde se guardan recuerdos especiales, pequeños fragmentos e historias congeladas en el tiempo.</p>
+                </div>
+            </div>
+            <div class="card epic" onclick="showSection('epic')">
+                <div>
+                    <div class="card-icon">⚡</div>
+                    <div class="card-title">EPIC</div>
+                    <p class="card-description">Nuestra propia odisea inspirada en grandes canciones, batallas de mitos y el ritmo de un musical inolvidable.</p>
+                </div>
+            </div>
+            <div class="card corazon" onclick="showSection('corazon')">
+                <div>
+                    <div class="card-icon">💝</div>
+                    <div class="card-title">Mi Corazón</div>
+                    <p class="card-description">El lado más puro y bonito de esta interfaz, hecho especialmente con animaciones interactivas llenas de sentimiento.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SECCIÓN EPIC (Bolsa de Eolo) ==================== -->
+    <div id="epicSection" class="section hidden">
+        <div class="epic-game-box">
+            <h1>KEEP YOUR FRIENDS CLOSE</h1>
+            <div class="subtitle" style="color:#bde4ff; margin-bottom:20px;">LA BOLSA DE LOS VIENTOS • TEMPESTAD ETERNA</div>
+            <div class="bag-container" id="bagContainer">
+                <div class="bag-glow" id="bagGlow"></div>
+                <div class="ancient-bag" id="bagIcon">
+                    <div class="bag-body">
+                        <div class="bag-folds"></div>
+                        <div class="bag-strap"></div>
+                        <div class="storm-seal"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="lyrics-display" id="lyricsDisplay">
+                <p class="lyric-text" id="lyricText">🌬️ Toca la Bolsa Ancestral... los vientos de Eolo aguardan 🌩️</p>
+            </div>
+            <p class="instruction" id="instructionTag" style="margin-top:15px; color:#bdc9f0;">⚡ TOCA LA BOLSA PARA INVOCAR LA TORMENTA ⚡</p>
+        </div>
+        <div class="back-to-menu" onclick="showSection('menu')">← Volver al Menú</div>
+    </div>
+
+    <!-- ==================== SECCIÓN CORAZÓN ==================== -->
+    <div id="corazonSection" class="section hidden">
+        <canvas id="fractalCanvas"></canvas>
+        <div id="heartContainer">
+            <div id="centralText">Lady</div>
+        </div>
+        <div class="back-to-menu" onclick="showSection('menu')">← Volver al Menú</div>
+    </div>
+
+    <!-- ==================== SECCIÓN BAÚL ==================== -->
+    <div id="baulSection" class="section hidden">
+        <div class="baul-container">
+            <h1>🔮 Mi Baúl para Ti</h1>
+            <div class="quote-box">
+                <p id="quoteText" class="quote">"Presiona el botón de abajo para sacar una frase especial de este baúl..."</p>
+            </div>
+            <button class="action-btn" onclick="getNewQuote()">Sacar un recuerdo</button>
+        </div>
+        <div class="back-to-menu" onclick="showSection('menu')">← Volver al Menú</div>
+    </div>
+
+    <script>
+        // ========== CONTROL DE SECCIONES ==========
+        function showSection(sectionName) {
+            // Ocultar todas las secciones
+            document.getElementById('menuSection').classList.add('hidden');
+            document.getElementById('menuSection').classList.remove('visible');
+            document.getElementById('epicSection').classList.add('hidden');
+            document.getElementById('epicSection').classList.remove('visible');
+            document.getElementById('corazonSection').classList.add('hidden');
+            document.getElementById('corazonSection').classList.remove('visible');
+            document.getElementById('baulSection').classList.add('hidden');
+            document.getElementById('baulSection').classList.remove('visible');
+            
+            if (sectionName === 'menu') {
+                document.getElementById('menuSection').classList.remove('hidden');
+                document.getElementById('menuSection').classList.add('visible');
+                // Detener tormenta de EPIC si estaba activa
+                if (typeof stopStorm === 'function') stopStorm();
+                // Ocultar vientos
+                const windCont = document.getElementById('windContainer');
+                if (windCont) windCont.style.display = 'none';
+            } else if (sectionName === 'epic') {
+                document.getElementById('epicSection').classList.remove('hidden');
+                document.getElementById('epicSection').classList.add('visible');
+                const windCont = document.getElementById('windContainer');
+                if (windCont) windCont.style.display = 'block';
+                // Inicializar epic si es necesario
+                if (typeof initEpic === 'function') initEpic();
+            } else if (sectionName === 'corazon') {
+                document.getElementById('corazonSection').classList.remove('hidden');
+                document.getElementById('corazonSection').classList.add('visible');
+                // Inicializar corazón
+                if (typeof initCorazon === 'function') initCorazon();
+            } else if (sectionName === 'baul') {
+                document.getElementById('baulSection').classList.remove('hidden');
+                document.getElementById('baulSection').classList.add('visible');
+            }
+        }
+
+        // ========== PÉTALOS GLOBALES ==========
+        function createPetal() {
+            const container = document.getElementById('cherryContainer');
+            if (!container) return;
+            const petal = document.createElement('div');
+            petal.classList.add('petal');
+            const size = Math.random() * 8 + 8;
+            petal.style.width = `${size}px`;
+            petal.style.height = `${size}px`;
+            petal.style.left = Math.random() * 100 + 'vw';
+            const duration = Math.random() * 4 + 5;
+            petal.style.animationDuration = `${duration}s`;
+            container.appendChild(petal);
+            setTimeout(() => petal.remove(), duration * 1000);
+        }
+        setInterval(createPetal, 150);
+
+        // ========== LÓGICA DEL BAÚL ==========
+        const frasesOriginales = [
+            "Cada momento contigo se convierte en mi recuerdo favorito.",
+            "Eres mi pensamiento favorito en un día cualquiera.",
+            "En este universo de código y estrellas, tú eres mi centro de gravedad.",
+            "Gracias por ser esa persona especial que ilumina todo a su alrededor.",
+            "Contigo aprendí que los detalles más pequeños son los que más llenan el corazón.",
+            "Te amo Lady",
+            "Gracias por estar siempre para mi",
+            "Eres mi estrella favorita, eres mi brillante sol.",
+            "Eres quien ilumina mi peor oscuridad.",
+            "Contigo me siento seguro.",
+            "La fecha en la que todo cambió: 30 de enero."
+        ];
+        let frasesDisponibles = [...frasesOriginales];
+
+        window.getNewQuote = function() {
+            const quoteText = document.getElementById('quoteText');
+            if (frasesDisponibles.length === 0) frasesDisponibles = [...frasesOriginales];
+            quoteText.style.opacity = 0;
+            quoteText.style.transform = "translateY(-10px)";
+            setTimeout(() => {
+                const randomIndex = Math.floor(Math.random() * frasesDisponibles.length);
+                const fraseSeleccionada = frasesDisponibles.splice(randomIndex, 1)[0];
+                quoteText.innerText = `"${fraseSeleccionada}"`;
+                quoteText.style.transform = "translateY(0)";
+                quoteText.style.opacity = 1;
+            }, 400);
+        };
+
+        // ========== LÓGICA DEL CORAZÓN LED ==========
+        let corazonInitialized = false;
+        window.initCorazon = function() {
+            if (corazonInitialized) return;
+            corazonInitialized = true;
+            
+            // Canvas fractal
+            const canvas = document.getElementById('fractalCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            function resizeCanvas() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            const stars = [];
+            const numArms = 5;
+            const numStars = 2500;
+            for (let i = 0; i < numStars; i++) {
+                const arm = i % numArms;
+                const angleOffset = (arm * 2 * Math.PI) / numArms;
+                const distance = Math.pow(Math.random(), 2.5) * (Math.min(width, height) * 0.65);
+                const spiralFactor = 0.015;
+                const angle = distance * spiralFactor + angleOffset;
+                const noiseFactor = Math.max(0, (distance * 0.15));
+                const randomX = (Math.random() - 0.5) * noiseFactor * (Math.random() > 0.8 ? 2 : 0.6);
+                const randomY = (Math.random() - 0.5) * noiseFactor * (Math.random() > 0.8 ? 2 : 0.6);
+                let colorType = Math.random();
+                let hue, saturation, brightness, alpha;
+                if (colorType < 0.6) {
+                    hue = 185 + Math.random() * 20;
+                    saturation = 85 + Math.random() * 15;
+                    brightness = 60 + Math.random() * 25;
+                    alpha = 0.2 + Math.random() * 0.5;
+                } else if (colorType < 0.9) {
+                    hue = 200 + Math.random() * 15;
+                    saturation = 90;
+                    brightness = 40 + Math.random() * 20;
+                    alpha = 0.15 + Math.random() * 0.3;
+                } else {
+                    hue = 50 + Math.random() * 20;
+                    saturation = Math.random() * 30;
+                    brightness = 85 + Math.random() * 15;
+                    alpha = 0.5 + Math.random() * 0.5;
+                }
+                stars.push({
+                    distance: distance,
+                    angleOffset: angle - (distance * spiralFactor),
+                    randomX: randomX,
+                    randomY: randomY,
+                    size: Math.random() * 1.5 + 0.4,
+                    color: `hsla(${hue}, ${saturation}%, ${brightness}%, `,
+                    alpha: alpha,
+                    isBrightCluster: Math.random() > 0.94
+                });
+            }
+            let globalRotation = 0;
+            function drawGalaxy() {
+                if (!ctx) return;
+                ctx.fillStyle = 'rgba(0, 0, 2, 0.05)';
+                ctx.fillRect(0, 0, width, height);
+                const cx = width / 2;
+                const cy = height / 2;
+                for (let i = 0; i < numStars; i++) {
+                    const star = stars[i];
+                    const currentAngle = star.angleOffset + (star.distance * 0.015) + (globalRotation * (star.distance * 0.0005 + 0.2));
+                    let x = cx + Math.cos(currentAngle) * star.distance + star.randomX;
+                    let y = cy + Math.sin(currentAngle) * star.distance + star.randomY;
+                    ctx.fillStyle = star.color + star.alpha + ")";
+                    ctx.beginPath();
+                    if (star.isBrightCluster) {
+                        ctx.arc(x, y, star.size * 1.6, 0, Math.PI * 2);
+                        ctx.shadowBlur = 4;
+                        ctx.shadowColor = '#4ae';
+                    } else {
+                        ctx.arc(x, y, star.size, 0, Math.PI * 2);
+                        ctx.shadowBlur = 0;
+                    }
+                    ctx.fill();
+                }
+                globalRotation += 0.005;
+                requestAnimationFrame(drawGalaxy);
+            }
+            drawGalaxy();
+            
+            // Corazón LED
+            const container = document.getElementById('heartContainer');
+            const textToRepeat = "te amo";
+            const totalPoints = 120;
+            const ledElements = [];
+            const centerX = container.offsetWidth / 2;
+            const centerY = container.offsetHeight / 2;
+            const scaleX = container.offsetWidth * (22 / 800);
+            const scaleY = container.offsetHeight * (18 / 700);
+            for (let i = 0; i < totalPoints; i++) {
+                const t = (i / totalPoints) * (2 * Math.PI);
+                const x = 16 * Math.pow(Math.sin(t), 3);
+                const y = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+                const led = document.createElement('div');
+                led.className = 'led-text';
+                led.innerText = textToRepeat;
+                led.style.opacity = "1";
+                led.style.textShadow = "0 0 15px #ff4d6d, 0 0 5px #fff";
+                led.style.left = `${centerX + x * scaleX}px`;
+                led.style.top = `${centerY - y * scaleY}px`;
+                container.appendChild(led);
+                ledElements.push(led);
+            }
+            let currentIndex = 0;
+            const waveSize = 50;
+            function animateLeds() {
+                for (let i = 0; i < totalPoints; i++) {
+                    ledElements[i].style.opacity = "1";
+                    ledElements[i].style.textShadow = "0 0 15px #ff4d6d, 0 0 5px #fff";
+                }
+                for (let i = 0; i < waveSize; i++) {
+                    const index = (currentIndex + i) % totalPoints;
+                    const progress = i / (waveSize - 1);
+                    const intensity = 1 - Math.sin(progress * Math.PI);
+                    ledElements[index].style.opacity = intensity;
+                    if (intensity > 0.1) {
+                        ledElements[index].style.textShadow = `0 0 ${15 * intensity}px #ff4d6d, 0 0 ${5 * intensity}px #fff`;
+                    } else {
+                        ledElements[index].style.textShadow = "none";
+                    }
+                }
+                currentIndex = (currentIndex + 1) % totalPoints;
+                setTimeout(animateLeds, 100);
+            }
+            animateLeds();
+        };
+
+        // ========== LÓGICA DE EPIC (Bolsa de Eolo) ==========
+        let epicInitialized = false;
+        let musicaEpic = null;
+        let epicAnimationId = null;
+        let epicWindInterval = null;
+        let isEpicPlaying = false;
+        
+        const letrasSincronizadas = [
+            { time: 0, text: "...Escuchando la introducción de los vientos..." },
+            { time: 11.6, text: "Great wind god, Aeolus", speaker: "odysseus" },
+            { time: 14, text: "I don't know if you know this", speaker: "odysseus" },
+            { time: 17.3, text: "But our path to home is blocked by an impenetrable storm", speaker: "odysseus" },
+            { time: 22.6, text: "I ask for your assistance so we at last can go the distance", speaker: "odysseus" },
+            { time: 29.5, text: "Can you cast the perfect winds for us and aid our journey home?", speaker: "odysseus" },
+            { time: 36.351, text: "Ha-ha-ha! I am the wind, twisting and turning", speaker: "aeolus" },
+            { time: 40, text: "I give the fire enough to stay burning", speaker: "aeolus" },
+            { time: 43.307, text: "Let's play a game", speaker: "aeolus" },
+            { time: 44.583, text: "A game?", speaker: "odysseus" },
+            { time: 45.2, text: "That's what I'm serving!", speaker: "aeolus" },
+            { time: 46.5, text: "And if you win, you will get what you're yearning", speaker: "aeolus" },
+            { time: 49.2, text: "Deal", speaker: "odysseus" },
+            { time: 49.4, text: "Take a look right here at this bag", speaker: "aeolus" },
+            { time: 51.8, text: "It has the winds of the storm all trapped", speaker: "aeolus" },
+            { time: 55.2, text: "All you gotta do is not open this bag", speaker: "aeolus" },
+            { time: 58.2, text: "Sounds too easy, what's the catch?", speaker: "odysseus" },
+            { time: 59.87, text: "Ha-ha-ha", speaker: "aeolus" },
+            { time: 60.516, text: "Keep your friends close and your enemies closer", speaker: "aeolus" },
+            { time: 64, text: "Never really know who you can trust", speaker: "aeolus" },
+            { time: 66.219, text: "If they wanna get the bag open, you gotta say, 'No, sir'", speaker: "aeolus" },
+            { time: 70.4, text: "Sometimes killing is a must", speaker: "aeolus" },
+            { time: 72.35, text: "What?", speaker: "odysseus", type: "alert" },
+            { time: 72.8, text: "'Cause the end always justifies the means", speaker: "aeolus" },
+            { time: 75.4, text: "Friends turn into foes and rivalries", speaker: "aeolus" },
+            { time: 79.15, text: "So keep your friends close and your enemies closer", speaker: "aeolus" },
+            { time: 82.45, text: "Never really know who you can trust", speaker: "aeolus" },
+            { time: 84.3, text: "Never really know who you can trust!", speaker: "aeolus" },
+            { time: 89.133, text: "Captain, what's happening?", speaker: "perimedes" },
+            { time: 90.5, text: "What's trapped in that bag?", speaker: "perimedes" },
+            { time: 92.003, text: "Something dangerous, friends. We mustn't lag", speaker: "odysseus" },
+            { time: 94.045, text: "It's treasure", speaker: "winions", type: "alert" },
+            { time: 96.145, text: "What?", speaker: "odysseus" },
+            { time: 96.8, text: "Buh-bye!", speaker: "winions", type: "alert" },
+            { time: 97.8, text: "Open the bag", speaker: "winions", type: "alert" },
+            { time: 98.628, text: "Let's see what you got", speaker: "elpenor", type: "alert" },
+            { time: 99.665, text: "No, do not", speaker: "odysseus" },
+            { time: 101.581, text: "Everybody listen closely, see how this bag is closed?", speaker: "odysseus" },
+            { time: 104.8, text: "That's how it's supposed to be", speaker: "odysseus" },
+            { time: 107.1, text: "This bag has the storm inside!", speaker: "odysseus" },
+            { time: 109.0, text: "We cannot let the treasure rumor fly", speaker: "odysseus" },
+            { time: 111.3, text: "We'll try", speaker: "perimedes" },
+            { time: 112.5, text: "Keep your friends close and your enemies closer", speaker: "crew" },
+            { time: 115.221, text: "Never really know who you can trust", speaker: "crew" },
+            { time: 116.5, text: "(Never really know who you can trust)", speaker: "crew" },
+            { time: 117.659, text: "Now they wanna get the bag open so they can have closure", speaker: "crew" },
+            { time: 120.409, text: "Sometimes sneaking is a must", speaker: "crew" },
+            { time: 121.5, text: "(Sometimes sneaking is a must)", speaker: "crew" },
+            { time: 122.762, text: "'Cause the end always justifies the means", speaker: "odysseus" },
+            { time: 126, text: "Everything's changed since Polites, so", speaker: "crew", type: "alert" },
+            { time: 129.8, text: "Keep your friends close and your enemies closer", speaker: "odysseus" },
+            { time: 133.2, text: "Never really know who you can trust", speaker: "odysseus" },
+            { time: 134.723, text: "Never really know who you can trust!", speaker: "odysseus", type: "alert" },
+            { time: 137.1, text: "For nine days, I've stayed wide awake", speaker: "odysseus" },
+            { time: 138.9, text: "Trying to make it home with no storm or tidal wave", speaker: "odysseus" },
+            { time: 142.636, text: "I remain unopposed, the bag is still closed", speaker: "odysseus" },
+            { time: 145.5, text: "and I'm getting closer to you...", speaker: "odysseus" },
+            { time: 149, text: "Penelope", speaker: "odysseus" },
+            { time: 150.75, text: "I can't wait to make some new memories", speaker: "odysseus" },
+            { time: 154, text: "Telemachus", speaker: "odysseus" },
+            { time: 156.8, text: "Time for me to be the father I never was", speaker: "odysseus" },
+            { time: 159.934, text: "Just keep your eyes open", speaker: "crew" },
+            { time: 162, text: "Why are my eyes and my heart and my soul so heavy?", speaker: "odysseus" },
+            { time: 165.4, text: "Just keep your eyes open", speaker: "crew" },
+            { time: 167.75, text: "I keep on trying to embrace you both, why won't you let me?", speaker: "odysseus" },
+            { time: 172.5, text: "Just keep your eyes open", speaker: "crew" },
+            { time: 173.8, text: "So much has changed but I'm the same!", speaker: "odysseus" },
+            { time: 176.0, text: "Yes, I'm the same", speaker: "odysseus" },
+            { time: 178.1, text: "Just keep your eyes open! Keep your eyes open!", speaker: "crew" },
+            { time: 181.8, text: "Wake up...", speaker: "penelope" },
+            { time: 183.3, text: "Wake up, Odysseus, they're opening the bag", speaker: "penelope", type: "alert" },
+            { time: 186.4, text: "Wake up...", speaker: "penelope", type: "alert" },
+            { time: 191.9, text: "No", type: "alert" },
+            { time: 193.8, text: "Keep your friends close and your enemies closer", speaker: "crew", type: "alert" },
+            { time: 196.4, text: "Never really know who you can trust", speaker: "crew", type: "alert" },
+            { time: 198, text: "Never really know who you can trust", speaker: "crew", type: "alert" },
+            { time: 199.45, text: "Storm! Full speed ahead!", speaker: "odysseus", type: "alert" },
+            { time: 202.3, text: "Where's the storm taking us?!", speaker: "odysseus", type: "alert" },
+            { time: 204.01, text: "I said to keep the bag closed, but you weren't compliant...", speaker: "aeolus" },
+            { time: 207.6, text: "If I had to guess?", speaker: "aeolus", type: "alert" },
+            { time: 209.0, text: "You're headed to the Land of the Giants", speaker: "aeolus", type: "alert" },
+            { time: 211.1, text: "Storm, storm", speaker: "odysseus", type: "alert" },
+            { time: 217.1, text: "Help me close the bag!", speaker: "odysseus", type: "alert" },
+            { time: 219.0, text: "But sir, it's too late!", speaker: "perimedes", type: "alert" },
+            { time: 219.95, text: "We can save whatever wind is left to use another day!", speaker: "odysseus", type: "alert" },
+            { time: 223.5, text: "Come on!", speaker: "odysseus", type: "alert" },
+            { time: 237.5, text: "¡¡ODYSSEUS OF ITHACA!! ⚡🔱", speaker: "poseidon", type: "alert" },
+            { time: 242.5, text: "Do you know who I am? 👁️", speaker: "poseidon", type: "alert" }
+        ];
+
+        window.initEpic = function() {
+            if (epicInitialized) return;
+            epicInitialized = true;
+            
+            musicaEpic = new Audio('Keep Your Friends Close.mp3');
+            musicaEpic.loop = false;
+            musicaEpic.volume = 0.5;
+            
+            const bagContainer = document.getElementById('bagContainer');
+            const bagIcon = document.getElementById('bagIcon');
+            const bagGlow = document.getElementById('bagGlow');
+            const lyricText = document.getElementById('lyricText');
+            const lyricsDisplay = document.getElementById('lyricsDisplay');
+            const instructionTag = document.getElementById('instructionTag');
+            const windContainerEpic = document.getElementById('windContainer');
+            
+            function actualizarSincronizacionEpic() {
+                if (!musicaEpic || musicaEpic.paused) return;
+                const tiempoActual = musicaEpic.currentTime;
+                let fraseActual = null;
+                for (let i = 0; i < letrasSincronizadas.length; i++) {
+                    const inicioFrase = letrasSincronizadas[i].time;
+                    const finFrase = letrasSincronizadas[i + 1] ? letrasSincronizadas[i + 1].time : Infinity;
+                    if (tiempoActual >= inicioFrase && tiempoActual < finFrase) {
+                        fraseActual = letrasSincronizadas[i];
+                        break;
+                    }
+                }
+                if (fraseActual && lyricText.innerText !== fraseActual.text) {
+                    lyricText.innerText = fraseActual.text;
+                    if (fraseActual.type === "alert") lyricText.style.color = "#ff6680";
+                    else if (fraseActual.speaker === "odysseus") lyricText.style.color = "#ffdd99";
+                    else lyricText.style.color = "#f5efdf";
+                }
+                if (tiempoActual >= 192.1) {
+                    if (!bagIcon.classList.contains('shaking-hard')) {
+                        bagIcon.classList.remove('shaking');
+                        bagIcon.classList.add('shaking-hard');
+                        document.body.style.backgroundColor = "#16020c";
+                        lyricsDisplay.style.border = "2px solid #ff4477";
+                        if (bagGlow) bagGlow.style.background = "radial-gradient(circle, rgba(255, 50, 100, 0.85) 0%, rgba(140, 10, 70, 0.9) 90%)";
+                    }
+                } else {
+                    if (!bagIcon.classList.contains('shaking')) {
+                        bagIcon.classList.remove('shaking-hard');
+                        bagIcon.classList.add('shaking');
+                        document.body.style.backgroundColor = "#0b0b1a";
+                        lyricsDisplay.style.border = "1px solid rgba(210, 170, 70, 0.5)";
+                        if (bagGlow) bagGlow.style.background = "radial-gradient(circle, rgba(80, 180, 255, 0.7) 0%, rgba(70, 40, 140, 0.8) 90%)";
+                    }
+                }
+                epicAnimationId = requestAnimationFrame(actualizarSincronizacionEpic);
+            }
+            
+            window.startStormEpic = function() {
+                if (!musicaEpic) return;
+                musicaEpic.play().then(() => {
+                    isEpicPlaying = true;
+                    epicAnimationId = requestAnimationFrame(actualizarSincronizacionEpic);
+                    if (bagGlow) bagGlow.style.transform = "scale(1.9)";
+                    if (instructionTag) instructionTag.innerText = "🌩️ TOCA LA BOLSA PARA CALMAR LA TORMENTA 🌩️";
+                    if (!epicWindInterval) {
+                        epicWindInterval = setInterval(() => {
+                            if (!musicaEpic || musicaEpic.paused) return;
+                            const line = document.createElement('div');
+                            line.classList.add('wind-line');
+                            line.style.width = `${Math.random() * 220 + 100}px`;
+                            line.style.top = `${Math.random() * 100}vh`;
+                            const speed = (musicaEpic.currentTime >= 192.1) ? 0.25 : 0.45;
+                            line.style.animationDuration = `${Math.random() * 0.5 + speed}s`;
+                            if (windContainerEpic) windContainerEpic.appendChild(line);
+                            setTimeout(() => line.remove(), 550);
+                        }, 22);
+                    }
+                }).catch(e => console.log("audio requiere interacción"));
+            };
+            
+            window.stopStorm = function() {
+                if (!musicaEpic) return;
+                isEpicPlaying = false;
+                musicaEpic.pause();
+                if (epicAnimationId) cancelAnimationFrame(epicAnimationId);
+                bagIcon.classList.remove('shaking', 'shaking-hard');
+                if (bagGlow) bagGlow.style.transform = "scale(1)";
+                if (instructionTag) instructionTag.innerText = "⚡ TOCA LA BOLSA PARA INVOCAR LA TORMENTA ⚡";
+                if (epicWindInterval) { clearInterval(epicWindInterval); epicWindInterval = null; }
+                if (lyricsDisplay) lyricsDisplay.style.border = "1px solid rgba(210, 170, 70, 0.5)";
+                if (lyricText) lyricText.innerText = "🌀 La tempestad reposa... Toca de nuevo para liberar los vientos de Eolo 🌀";
+                document.body.style.backgroundColor = "#0b0b1a";
+            };
+            
+            function toggleEpicStorm(e) {
+                if (e) { e.preventDefault(); e.stopPropagation(); }
+                if (!isEpicPlaying) window.startStormEpic();
+                else window.stopStorm();
+            }
+            
+            if (bagContainer) {
+                bagContainer.addEventListener('click', toggleEpicStorm);
+                bagContainer.addEventListener('touchend', toggleEpicStorm);
+            }
+        };
+    </script>
+</body>
+</html>
